@@ -56,6 +56,8 @@ void LattInit(const int &size, const int &height)
         Cell[i].f=0.999772;
         Cell[i].X=0.018801218;
         Cell[i].Cai=0.00025;
+        Cell[i].tension = 0;
+        Cell[i].s_tension = 0;
     }
     //define external currents
     for (i=0;i<size*size*height;i++)
@@ -210,6 +212,7 @@ void OdeSolve(int &ii, int &jj, int &kk)
         Cell[(ii+kk*N)*N+jj].f=fFunction(delta_t);
         Cell[(ii+kk*N)*N+jj].X=XFunction(delta_t);
         Cell[(ii+kk*N)*N+jj].Cai+=delta_t*CaiFunction();
+        Cell[(ii+kk*N)*N+jj].s_tension += delta_t * s_tensionFunction();
     }
 }
 
@@ -236,13 +239,27 @@ double Coupling(int &ii, int &jj, int &kk)
                 V[(ii+un*N)*N+jj]+V[(ii+dn*N)*N+jj]-6.*V[(ii+kk*N)*N+jj]);
 }
 
-void LattInit(const int &size,  const int &height, char a[])
+void LattInit(const int &size,  const int &height, const char *a)
 {
     //srand((ProcRank+1)*10);
     Cell = new CellVariables[size*size*height];
     I_ext = new double[size*size*height];
     V = new double[size*size*height];
+    int i,j,k; //int counters
+    for (i=0;i<size*size*height;i++)
+    {
+        V[i]=-70.;
 
+        Cell[i].m=0.0143576;
+        Cell[i].h=0.745286;
+        Cell[i].j=0.76125;
+        Cell[i].d=0.00934794;
+        Cell[i].f=0.999772;
+        Cell[i].X=0.018801218;
+        Cell[i].Cai=0.00025;
+        Cell[i].tension = 0;
+        Cell[i].s_tension = 0;
+    }
 //	V_av = new double[size*size];
 
 #ifdef OS_WINDOWS
@@ -350,7 +367,7 @@ void LattInit(const int &size,  const int &height, char a[])
 
 
 
-            int i,j,k; //int counters
+
 
         for (k=1; k<20; k++)
             for (i=0; i<N; i++)

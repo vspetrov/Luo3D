@@ -10,5 +10,5 @@ extern double dFunction(double &delta_t);
 extern double fFunction(double &delta_t);
 extern double XFunction(double &delta_t);
 extern double CaiFunction();
-
+extern double s_tensionFunction();
 #endif

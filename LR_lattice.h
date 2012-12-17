@@ -24,6 +24,8 @@ struct CellVariables //Phase space variables of one cell
     double f;
     double X;
     double Cai;
+    double tension;
+    double s_tension;
 };
 
 extern double *V;
@@ -38,5 +40,5 @@ extern void LattInit(const int &size, const int &height);//initializing function
 void OdeSolve(int &ii, int &jj, int &kk);//this function solves the system with NO coupling on the interval 'dt'
 inline int Substeps(double &vd);//devides step length due to value of Voltage (V)
 extern void SolveEquations(double MaxTime /*time of calculations*/, MPI_Comm &GridComm, int &GridSize, MPI_Datatype &plane_x, MPI_Datatype &plane_y, MPI_Datatype &square);//Solves the task
-extern void LattInit(const int &size , const int &height, char a[]);
+extern void LattInit(const int &size , const int &height, const char *a);
 #endif
